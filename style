@@ -1,0 +1,56 @@
+#header, footer {
+    background-color: mistyrose;
+    padding: 10px; /* Add padding for better spacing */
+    text-align: center; /* Center text */
+}
+
+/* Set body background to Dark Sea Green */
+body {
+    background-color: darkseagreen;
+    margin: 0; /* Remove default margin */
+    font-family: Arial, sans-serif; /* Improve readability */
+}
+
+/* Optional: Style the footer text */
+.footer-text {
+    color: black; /* Ensure text is readable */
+    font-weight: bold;
+}
+ h1 {
+    text-align: right;
+    font-family: "Lucida Console", monospace;
+    font-weight: normal;
+    color: black;
+
+}
+footer {
+    text-align: right;
+    font-family: "Lucida Console", monospace;
+    font-weight: normal;
+    color: black;
+
+}
+table.form, tr.form, td.form {
+  width: 70%;
+  opacity: 0.9;
+  font-family: Garamond, serif;
+  background-color:mistyrose;
+  padding: 0px;
+  border-spacing: 00px;
+  
+}
+th.form {
+  font-family: Garamond, serif;
+  background-color:mistyrose;
+  padding: 20px;
+  border-spacing: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.textsize1 
+{
+    width:10px
+}
+.textsize5 
+{
+    width:40px 
