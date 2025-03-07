@@ -1,0 +1,121 @@
+console.log("hw2.js loaded successfully!");
+
+function reviewForm() {
+    // Get form values
+    let firstName = document.getElementById("firstname").value.trim();
+    let middleInitial = document.getElementById("middleinit").value.trim();
+    let lastName = document.getElementById("lastname").value.trim();
+    let dob = document.getElementById("dob").value;
+    let email = document.getElementById("email").value.trim();
+    let userId = document.getElementById("userid").value.trim();
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("password2").value;
+
+    // User ID validation
+    let userIdError = "";
+    let userIdRegex = /^[a-zA-Z][a-zA-Z0-9_-]{4,29}$/; // Starts with letter, 5-30 chars, no special chars other than - and _
+    let desiredUserId = userId.toLowerCase(); // Convert user ID to lowercase
+
+    if (!userIdRegex.test(userId)) {
+        userIdError = "ERROR: User ID must be between 5 and 30 characters, starting with a letter, and only letters, numbers, underscores, or dashes are allowed.";
+    }
+
+    // Password validation
+    let passwordError = "";
+    let passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#%^&*()\-_=+\\/<>,.`~])[^"\s]{8,30}$/;
+    let passwordLower = password.toLowerCase();
+
+    if (password !== confirmPassword) {
+        passwordError = "ERROR: Passwords do not match.";
+    } else if (!passwordRegex.test(password)) {
+        passwordError = "ERROR: Password must be 8-30 characters long, with at least one uppercase letter, one number, and one special character (excluding quotes).";
+    } else if (passwordLower === desiredUserId || passwordLower.includes(desiredUserId)) {
+        passwordError = "ERROR: Password cannot be the same as your desired user ID or contain it.";
+    }
+
+    // Get checked gender
+    let gender = document.querySelector('input[name="gender"]:checked');
+    gender = gender ? gender.value : "Not selected";
+
+    // Block/area 3: Address validation
+    let address1 = document.getElementById("addr1").value.trim();
+    let address2 = document.getElementById("addr2").value.trim();
+    let city = document.getElementById("city").value.trim();
+    let state = document.getElementById("state").value;
+    let zip = document.getElementById("zip").value.trim();
+
+    let addressError = "";
+    
+    // Validate Address Line 1
+    if (address1.length < 2 || address1.length > 30) {
+        addressError += "ERROR: Address Line 1 must be between 2 and 30 characters.<br>";
+    }
+
+    // Validate Address Line 2 (only if entered)
+    if (address2.length > 0 && (address2.length < 2 || address2.length > 30)) {
+        addressError += "ERROR: Address Line 2 must be between 2 and 30 characters if entered.<br>";
+    }
+
+    // Validate City
+    if (city.length < 2 || city.length > 30) {
+        addressError += "ERROR: City must be between 2 and 30 characters.<br>";
+    }
+
+    // Validate State (ensure it's not the null/empty value)
+    if (state === "") {
+        addressError += "ERROR: Please select a valid state.<br>";
+    }
+
+    // Validate Zip Code
+    let zipRegex = /^[0-9]{5}(-[0-9]{4})?$/;
+    if (!zipRegex.test(zip)) {
+        addressError += "ERROR: Zip Code must be 5 digits or in the format XXXXX-XXXX.<br>";
+    } else {
+        // Truncate Zip Code to 5 digits if longer
+        zip = zip.substring(0, 5);
+    }
+
+    // Get checked reasons
+    let reasons = [];
+    document.querySelectorAll('input[name="reason"]:checked').forEach((checkbox) => {
+        reasons.push(checkbox.value);
+    });
+
+    // Get symptoms text
+    let symptoms = document.getElementById("Symptoms").value.trim();
+
+    // Get pain scale value
+    let painScale = document.getElementById("Pain").value;
+
+    function updatePain(value) {
+        document.getElementById("painDisplay").textContent = value;
+    }
+
+    // Create review section HTML
+    let reviewContent = `
+        <h3>PLEASE REVIEW THIS INFORMATION</h3>
+        <p><strong>Name:</strong> ${firstName} ${middleInitial} ${lastName}</p>
+        <p><strong>Gender:</strong> ${gender}</p>
+        <p><strong>Date of Birth:</strong> ${dob}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>User ID:</strong> ${desiredUserId}</p>
+        <p><strong>Address:</strong> ${address1}${address2 ? ", " + address2 : ""}, ${city}, ${state} ${zip}</p>
+        <p><strong>Reasons for Visit:</strong> ${reasons.length ? reasons.join(", ") : "None selected"}</p>
+        <p><strong>Symptoms:</strong> ${symptoms ? symptoms : "None"}</p>
+        <p><strong>Pain Scale:</strong> ${painScale}</p>
+        <p><strong>Password:</strong> ${passwordError ? passwordError : "Valid"}</p>
+        ${addressError ? `<p style="color:red;"><strong>${addressError}</strong></p>` : ""}
+    `;
+
+    // Update review section and make it visible
+    let reviewSection = document.getElementById("reviewSection");
+    reviewSection.innerHTML = reviewContent;
+    reviewSection.style.display = "block";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("reviewBtn").addEventListener("click", function(event) {
+        event.preventDefault();
+        reviewForm();
+    });
+});
